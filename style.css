@@ -1,0 +1,611 @@
+/* ------------------------------
+   GLOBAL
+------------------------------ */
+
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 24px;
+    background: #f5f7fb;
+    color: #333;
+}
+
+/* 앱 전체 컨테이너 */
+.app-title {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #3b4a6b;
+}
+
+.app {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    padding: 20px 24px 80px;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.date-box {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #eef4ff;
+    color: #334155;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #d0ddff;
+}
+
+.date-box:hover {
+    background: #e2ecff;
+}
+
+.btn-manage {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: #ffe6f1;
+    color: #b83280;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-manage:hover {
+    background: #ffd2e7;
+}
+
+/* ------------------------------
+   GLOBAL
+------------------------------ */
+
+* {
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 24px;
+    background: #f5f7fb;
+    color: #333;
+}
+
+/* 앱 전체 컨테이너 */
+.app-title {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #3b4a6b;
+}
+
+.app {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+    padding: 20px 24px 80px;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.date-box {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #eef4ff;
+    color: #334155;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #d0ddff;
+}
+
+.date-box:hover {
+    background: #e2ecff;
+}
+
+.btn-manage {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: #ffe6f1;
+    color: #b83280;
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-manage:hover {
+    background: #ffd2e7;
+}
+
+/* ------------------------------
+   FOOTER BUTTON BAR
+------------------------------ */
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+}
+
+.footer-spacer {
+    flex: 1;
+}
+
+/* Footer buttons */
+.btn {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-add {
+    background: #e0f7e9;
+    color: #0f8a3c;
+}
+.btn-add:hover {
+    background: #c8f2d8;
+}
+
+.btn-delete {
+    background: #ffe4e4;
+    color: #c53030;
+}
+.btn-delete:hover {
+    background: #ffd4d4;
+}
+
+.btn-save {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+.btn-save:hover {
+    background: #c7d2fe;
+}
+
+.btn-load {
+    background: #fef3c7;
+    color: #b45309;
+}
+.btn-load:hover {
+    background: #fde68a;
+}
+
+.btn-export {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+.btn-export:hover {
+    background: #bae6fd;
+}
+
+/* ------------------------------
+   MODALS (Message / Staff / Calendar)
+------------------------------ */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 14px;
+    width: 320px;
+    max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #334155;
+}
+
+/* Staff list */
+.staff-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+}
+
+.staff-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+
+.staff-delete-btn {
+    background: #ffe4e4;
+    color: #b91c1c;
+    border: none;
+    padding: 2px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.staff-delete-btn:hover {
+    background: #fecaca;
+}
+
+/* Staff input row */
+.staff-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+#newStaffName {
+    flex: 1;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+}
+
+/* Modal buttons */
+.modal-content button {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-right: 6px;
+    font-size: 13px;
+}
+
+#copyMessage {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+#copyMessage:hover {
+    background: #bae6fd;
+}
+
+#closeMessage,
+#closeStaffBtn,
+#calendarClose {
+    background: #e2e8f0;
+    color: #475569;
+}
+#closeMessage:hover,
+#closeStaffBtn:hover,
+#calendarClose:hover {
+    background: #cbd5e1;
+}
+
+/* Staff column width fix */
+.schedule-table th.staff-col,
+.schedule-table td:first-child {
+    width: 70px;   /* 필요하면 240px, 260px로 더 늘릴 수 있음 */
+}
+
+/* 직원 이름 dropdown만 폭 넓히기 */
+.staff-select {
+    width: 50px;     /* 원하는 폭 */
+    min-width: 100px; /* 너무 줄어들지 않게 */
+}
+
+/* 직원 셀 가운데 정렬 */
+.schedule-table td:first-child {
+    text-align: center;
+}
+
+/* 직원 이름 파스텔 톤 */
+.staff-select {
+    font-weight: 600;
+}
+
+/* 직원 이름 셀만 파스텔 블루 박스 */
+.schedule-table td.staff-col {
+    background-color: #e6f2fb;
+    border-radius: 8px;
+    padding: 6px 10px;
+    text-align: center;
+}
+
+
+/* 요일 바: 라이트 파스텔 그레이 */
+.schedule-table th.day-col {
+    background-color: #f3f4f6; /* 아주 부드러운 그레이 */
+    color: #333;               /* 글씨는 진한 회색 */
+    font-weight: 600;          /* 요일은 약간 강조 */
+}
+
+/* 날짜는 더 가볍고 은은하게 */
+.date-label {
+    font-weight: 400;   /* bold 제거 */
+    font-size: 12px;    /* 요일보다 작게 */
+    color: #666;        /* 부드러운 회색 */
+    margin-top: 2px;    /* 요일과 살짝 간격 */
+}
+
+
+/* 직원 스케줄 줄 사이에 라이트 파스텔 그레이 라인 */
+.schedule-table tbody tr {
+    border-bottom: 1px solid #e5e7eb; /* 아주 부드러운 라이트 그레이 */
+}
+
+/* 마지막 줄은 라인 제거 */
+.schedule-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+
+/* ------------------------------
+   TABLE STYLING (가독성 및 색상 보강)
+------------------------------ */
+
+.schedule-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 10px;
+}
+
+/* 헤더 스타일 */
+.schedule-table th {
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 2px solid #edf2f7;
+}
+
+/* 직원 열 스타일 */
+.staff-col {
+    background-color: #f8faff;
+    border-right: 1px solid #edf2f7;
+}
+
+/* 시간 셀 내부 정렬 */
+.time-cell {
+    display: flex;
+    flex-direction: column; /* 시간을 위아래로 배치 */
+    gap: 4px;
+    align-items: center;
+    padding: 8px 4px;
+}
+
+/* ✅ Start / End dropdown 터치 간격 넓히기 */
+.time-cell select {
+    padding: 6px 10px; /* 터치 영역 확대 */
+    font-size: 15px;   /* 글자 크기 살짝 키움 */
+}
+
+.time-cell select + select {
+    margin-top: 6px;   /* 두 dropdown 사이 간격 증가 */
+}
+
+.time-cell select {
+    display: block !important;
+    margin-bottom: 2px !important; /* 🔥 강제 간격 */
+}
+
+.time-cell select:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Dropdown (select) 디자인 */
+select {
+    appearance: none; /* 기본 화살표 제거 (선택사항) */
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 13px;
+    color: #4a5568;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+}
+
+select:hover {
+    border-color: #cbd5e0;
+    background-color: #fcfcfc;
+}
+
+select:focus {
+    border-color: #a3bffa;
+    box-shadow: 0 0 0 3px rgba(163, 191, 250, 0.2);
+}
+
+/* 직원 선택박스 특별 강조 */
+.staff-select {
+    border: 1px solid #d1e3ff;
+    color: #2b6cb0;
+    background-color: #f0f7ff;
+    width: 110px !important; /* 폭 고정 */
+}
+
+/* 총 근무시간(Total) 강조 */
+.total-cell {
+    font-weight: 700;
+    color: #2d3748;
+    text-align: center;
+    background-color: #fdfdfd;
+}
+
+/* 메시지 버튼 디자인 */
+.msg-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.msg-btn:hover {
+    background: #5a67d8;
+}
+
+/* 모달 메시지창 (pre 태그) */
+#messageText {
+    background: #f7fafc;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 1. 각 줄(Row)을 하나의 박스로 만들기 */
+.schedule-table tbody tr {
+    border: 1px solid #e5e7eb;    /* 옅은 그레이 선 */
+    display: table-row;           /* 표 형태 유지 */
+}
+
+/* 2. 박스 모서리 부드럽게 깎기 및 그림자 살짝 */
+.schedule-table td {
+    border-top: 1px solid #e5e7eb;    /* 위쪽 선 */
+    border-bottom: 1px solid #e5e7eb; /* 아래쪽 선 */
+    padding: 8px 4px;
+}
+
+/* 3. 첫 번째 칸(직원)과 마지막 칸(메시지) 끝부분 라운딩 */
+.schedule-table td:first-child {
+    border-left: 1px solid #e5e7eb;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.schedule-table td:last-child {
+    border-right: 1px solid #e5e7eb;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* 1. 선택된 줄 전체를 '초극강' 연한 민트색으로 변경 */
+#scheduleTable tbody tr.selected-row {
+    /* 기존보다 훨씬 더 흰색에 가까운 민트색으로 변경 */
+    background-color: #f7fee7 !important; 
+}
+
+/* 2. 각 칸의 배경을 투명하게 유지하여 줄 배경색이 드러나게 함 */
+#scheduleTable tbody tr.selected-row td,
+#scheduleTable tbody tr.selected-row .staff-col,
+#scheduleTable tbody tr.selected-row .time-cell {
+    background-color: transparent !important;
+}
+
+/* 3. 선택되었을 때의 테두리도 아주 연한 민트빛으로 조화롭게 변경 */
+#scheduleTable tbody tr.selected-row td {
+    border-top: 1px solid #ecfdf5 !important;
+    border-bottom: 1px solid #ecfdf5 !important;
+}
+
+/* 1. 시간과 이름 선택 박스의 높이 자체를 줄임 */
+.time-select, .staff-select {
+    height: 28px !important;       /* 기존보다 높이를 낮게 고정 */
+    padding: 0 2px !important;     /* 안쪽 여백을 없앰 */
+    font-size: 0.85rem !important;  /* 글자 크기를 살짝 줄임 */
+    margin: 0 !important;
+}
+
+/* 2. 한 칸에 위아래로 있는 두 박스 사이의 간격을 없앰 */
+.time-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0px !important;           /* 0으로 만들어서 두 박스를 딱 붙임 */
+}
+
+/* 3. 메시지 버튼도 높이를 맞춰서 줄임 */
+.msg-btn {
+    height: 26px !important;
+    padding: 0 8px !important;
+    font-size: 0.8rem !important;
+    line-height: 22px !important;
+}
+
+/* 4. 마지막으로 칸의 위아래 여백을 다시 한번 최소화 */
+.schedule-table td {
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+}
+
+/* 상단 날짜 박스 스타일 정의 */
+#dateBox {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+/* 직원 선택 드롭다운 스타일 정의 */
+.staff-select {
+    font-weight: 700;
+}
+
+/* 메시지 버튼 스타일 정의 */
+.msg-btn {
+    font-weight: 700;
+}
+
+
+/* ------------------------------
+   SCROLL TO TOP BUTTON
+------------------------------ */
+
+.scroll-top-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: #e0e7ff;
+    color: #3730a3;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.scroll-top-btn:hover {
+    background: #c7d2fe;
+}

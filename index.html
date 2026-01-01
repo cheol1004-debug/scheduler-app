@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Scheduler</title>
+
+    <!-- PWA: manifest 연결 -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- PWA: iPhone 전체 화면 모드 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <!-- PWA: 서비스 워커 등록 -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("service-worker.js");
+        }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+<h1 class="app-title">Restaurant Schedule</h1>
+
+<div class="app">
+
+    <div class="header">
+        <div id="dateBox" class="date-box">Select a week</div>
+        <button id="manageStaffBtn" class="btn-manage">Manage Staff</button>
+    </div>
+
+    <table id="scheduleTable" class="schedule-table">
+        <thead>
+            <tr>
+                <th class="staff-col">Staff</th>
+
+                <th class="day-col">
+                    Mon
+                    <div class="date-label"></div>
+                </th>
+                <th class="day-col">
+                    Tue
+                    <div class="date-label"></div>
+                </th>
+                <th class="day-col">
+                    Wed
+                    <div class="date-label"></div>
+                </th>
+                <th class="day-col">
+                    Thu
+                    <div class="date-label"></div>
+                </th>
+                <th class="day-col">
+                    Fri
+                    <div class="date-label"></div>
+                </th>
+                <th class="day-col">
+                    Sat
+                    <div class="date-label"></div>
+                </th>
+                <th class="day-col">
+                    Sun
+                    <div class="date-label"></div>
+                </th>
+
+                <th>Total</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+
+<div class="footer">
+    <button id="addRow" class="btn btn-add">+ Add Row</button>
+    <button id="deleteRow" class="btn btn-delete">- Delete Row</button>
+
+    <div class="footer-spacer"></div>
+
+    <button id="saveBtn" class="btn btn-save">Save</button>
+    <button id="loadBtn" class="btn btn-load">Load</button>
+    <button id="exportHtmlBtn" class="btn btn-export">Export HTML</button>
+</div>
+
+<div id="messagePopup" class="modal">
+    <div class="modal-content">
+        <h3>Message</h3>
+        <pre id="messageText"></pre>
+        <button id="copyMessage">Copy</button>
+        <button id="closeMessage">Close</button>
+    </div>
+</div>
+
+<div id="staffModal" class="modal">
+    <div class="modal-content">
+        <h3>Manage Staff</h3>
+
+        <ul id="staffList" class="staff-list"></ul>
+
+        <div class="staff-input-row">
+            <input id="newStaffName" type="text" placeholder="New staff name">
+            <button id="addStaffBtn">Add</button>
+        </div>
+
+        <button id="closeStaffBtn">Close</button>
+    </div>
+</div>
+
+<div id="calendarModal" class="modal">
+    <div class="modal-content">
+        <h3>Select a Date</h3>
+
+        <input id="calendarInput" type="date">
+
+        <button id="calendarClose">Close</button>
+    </div>
+</div>
+
+<button id="scrollTopBtn" class="scroll-top-btn">▲</button>
+
+</body>
+</html>
