@@ -275,7 +275,7 @@ document.getElementById("copyMessage").onclick = () => {
 };
 
 /* ------------------------------
-   GENERATE STAFF MESSAGE (Korean style)
+   GENERATE STAFF MESSAGE (English style)
 ------------------------------ */
 
 function generateStaffMessage(row) {
@@ -284,12 +284,13 @@ function generateStaffMessage(row) {
     // Week 텍스트 가져오기
     const weekText = document.getElementById("dateBox").textContent;
 
-    // 날짜 범위 파싱 (예: "Week of 12/29/2025 - 01/04/2026")
+    // 날짜 범위 파싱
     const range = weekText.replace("Week of ", "").split(" - ");
     const startDate = new Date(range[0]);
     const endDate = new Date(range[1]);
 
-    const daysKor = ["일", "월", "화", "수", "목", "금", "토"];
+    // 요일을 한국어 대신 영어 단축형으로 변경
+    const daysEng = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     let msg = `[${staffName}] Weekly Schedule\n`;
     msg += `${startDate.getFullYear()}년 ${startDate.getMonth() + 1}월 ${startDate.getDate()}일 ~ `;
@@ -297,7 +298,6 @@ function generateStaffMessage(row) {
     msg += `--------------------------------------------\n`;
 
     const timeCells = row.querySelectorAll(".time-cell");
-    let totalMinutes = 0;
 
     timeCells.forEach((cell, i) => {
         const selects = cell.querySelectorAll("select");
@@ -310,17 +310,12 @@ function generateStaffMessage(row) {
 
             const mm = dayDate.getMonth() + 1;
             const dd = dayDate.getDate();
-            const dayKor = daysKor[dayDate.getDay()];
+            // 영문 요일 배열 사용
+            const dayEng = daysEng[dayDate.getDay()];
 
-            msg += `• ${dayKor}(${mm}/${dd}): ${start} – ${end}\n`;
-
-            const startMin = convertToMinutes(start);
-            const endMin = convertToMinutes(end);
-            totalMinutes += (endMin - startMin);
+            msg += `• ${dayEng}(${mm}/${dd}): ${start} – ${end}\n`;
         }
     });
-
-    // msg += `\n⏱ Total Hours: ${(totalMinutes / 60).toFixed(1)}`;
 
     return msg;
 }
