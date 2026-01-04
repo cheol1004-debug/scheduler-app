@@ -393,39 +393,40 @@ document.getElementById("saveBtn").onclick = () => {
 ------------------------------ */
 
 function loadScheduleForDate(dateStr) {
-    const weekText = formatWeekRange(dateStr);
-    const dateKey = "savedSchedule_" + weekText;
+    const weekRangeText = formatWeekRange(dateStr);
+    const dateKey = "savedSchedule_" + weekRangeText;
 
     const saved = localStorage.getItem(dateKey);
     if (!saved) {
-        alert("No saved schedule found.");
+        alert("No saved schedule found for this week.");
         return;
     }
 
+    // 데이터 복구 로직
     const data = JSON.parse(saved);
     const tbody = document.querySelector("#scheduleTable tbody");
     tbody.innerHTML = "";
 
     data.forEach(item => {
         const row = createRow();
-
         row.querySelector(".staff-select").value = item.staff;
-
         const timeCells = row.querySelectorAll(".time-cell");
         item.times.forEach((t, i) => {
-            const selects = timeCells[i].querySelectorAll("select");
-            selects[0].value = t.start;
-            selects[1].value = t.end;
+            if (timeCells[i]) {
+                const selects = timeCells[i].querySelectorAll("select");
+                selects[0].value = t.start;
+                selects[1].value = t.end;
+            }
         });
-
         tbody.appendChild(row);
     });
 
-    calculateAllTotals();
-
-    // 🔥 Load 후 Week of 날짜 업데이트 (중요)
-    document.getElementById("dateBox").textContent = formatWeekRange(dateStr);
+    // 핵심: 화면 상단의 날짜 텍스트와 헤더의 일자(mm/dd)를 모두 업데이트
+    document.getElementById("dateBox").textContent = weekRangeText;
     updateHeaderDates(dateStr);
+    localStorage.setItem("last_selected_date", dateStr); // 불러온 날짜를 현재 날짜로 저장
+    
+    calculateAllTotals();
 }
 
 /* ------------------------------
@@ -435,6 +436,8 @@ function loadScheduleForDate(dateStr) {
 function handleWeekChange(dateStr) {
     document.getElementById("dateBox").textContent = formatWeekRange(dateStr);
     updateHeaderDates(dateStr);
+    // 선택한 날짜를 저장하여 새로고침 시 유지되도록 함
+    localStorage.setItem("last_selected_date", dateStr);
 }
 
 /* ------------------------------
@@ -587,23 +590,33 @@ document.getElementById("scrollTopBtn").onclick = () => {
    PAGE LOAD INITIALIZATION
 ------------------------------ */
 
+/* script.js 의 window.onload 부분을 아래와 같이 수정하세요 */
+
 window.onload = () => {
     initializeTable();
-    calculateAllTotals();
-
-    // 오늘 날짜 기준으로 Week of 자동 표시
+    
+    // 1. 마지막으로 사용했던 날짜가 있는지 확인
+    const lastDate = localStorage.getItem("last_selected_date");
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const dd = String(today.getDate()).padStart(2, "0");
     const todayStr = `${yyyy}-${mm}-${dd}`;
 
-    document.getElementById("dateBox").textContent = formatWeekRange(todayStr);
+    // 2. 저장된 날짜가 있으면 그 날짜로, 없으면 오늘 날짜로 초기화
+    const targetDate = lastDate || todayStr;
+    
+    document.getElementById("dateBox").textContent = formatWeekRange(targetDate);
+    updateHeaderDates(targetDate); // 헤더 날짜(숫자)도 업데이트
 
-    // 직원 목록이 없으면 기본값 저장
+    // 3. 직원 목록 초기화
     if (!localStorage.getItem("staffList")) {
         saveStaffList(["Staff A", "Staff B", "Staff C", "Staff D"]);
     }
+
+    // 4. 자동 복원 실행 (이미 작성된 코드가 있다면 순서 유지)
+    restoreAutoSavedLayout();
+    calculateAllTotals();
 };
 
 /* ------------------------------
