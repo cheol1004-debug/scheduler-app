@@ -62,27 +62,23 @@ function generateStaffDropdown() {
     return html;
 }
 
-/* ------------------------------
-   CREATE ROW
------------------------------- */
-
 function createRow() {
     const row = document.createElement("tr");
 
-    // 클릭 시 민트색 선택
+    // 클릭 시 민트색 선택 (기존 유지)
     row.addEventListener('click', function() {
         const allRows = document.querySelectorAll("#scheduleTable tbody tr");
         allRows.forEach(r => r.classList.remove("selected-row"));
         this.classList.add("selected-row");
     });
 
-    // 직원 이름 셀
+    // 직원 이름 셀 (기존 유지)
     const staffCell = document.createElement("td");
     staffCell.className = "staff-col";
     staffCell.innerHTML = generateStaffDropdown();
     row.appendChild(staffCell);
 
-    // 요일별 시간 선택 셀 (월~일)
+    // 요일별 시간 선택 셀 (월~일, 총 7개 셀)
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     days.forEach(() => {
         const td = document.createElement("td");
@@ -95,16 +91,28 @@ function createRow() {
         row.appendChild(td);
     });
 
-    // 총 근무시간 셀
+    // 총 근무시간 셀 (기존 유지)
     const totalCell = document.createElement("td");
     totalCell.className = "total-cell";
     totalCell.textContent = "0h";
     row.appendChild(totalCell);
 
-    // 메시지 버튼
+    // 메시지 버튼 (기존 유지)
     const msgCell = document.createElement("td");
     msgCell.innerHTML = `<button class="msg-btn">Message</button>`;
     row.appendChild(msgCell);
+
+    // ------------------------------------------------------
+    // ✅ 추가된 부분: 6군데(월~일) 시간 박스에 실시간 색상 변경 이벤트 연결
+    // ------------------------------------------------------
+    row.querySelectorAll(".time-select").forEach(select => {
+        select.addEventListener("change", () => {
+            calculateRowTotal(row); // 시간이 바뀌면 즉시 색상 계산 함수 호출
+        });
+    });
+
+    // 처음에 빈 줄이 생길 때도 기본값(10:00AM)에 맞춰 색상 초기화
+    setTimeout(() => calculateRowTotal(row), 0);
 
     return row;
 }
@@ -150,7 +158,7 @@ document.getElementById("deleteRow").onclick = () => {
 };
 
 /* ------------------------------
-   CALCULATE TOTAL HOURS
+   CALCULATE TOTAL HOURS & COLOR (UI)
 ------------------------------ */
 
 function calculateRowTotal(row) {
@@ -161,6 +169,17 @@ function calculateRowTotal(row) {
         const selects = cell.querySelectorAll("select");
         const start = selects[0].value;
         const end = selects[1].value;
+
+        // ✅ 아주 살짝 더 연한 파스텔 핑크 (#fff1f2) 적용
+        selects.forEach(select => {
+            if (select.value !== "10:00AM") {
+                select.style.setProperty("background-color", "#fff1f2", "important"); // 더 연한 핑크
+                select.style.setProperty("border-color", "#ffe4e6", "important");    // 테두리도 연하게
+            } else {
+                select.style.setProperty("background-color", "", "");
+                select.style.setProperty("border-color", "", "");
+            }
+        });
 
         if (start === end) return;
 
@@ -173,12 +192,8 @@ function calculateRowTotal(row) {
     });
 
     const hours = (totalMinutes / 60).toFixed(1);
-    row.querySelector(".total-cell").textContent = `${hours}h`;
-}
-
-function calculateAllTotals() {
-    const rows = document.querySelectorAll("#scheduleTable tbody tr");
-    rows.forEach(row => calculateRowTotal(row));
+    // 근무 시간이 0이면 비워두기
+    row.querySelector(".total-cell").textContent = (totalMinutes > 0) ? `${hours}h` : "";
 }
 
 /* ------------------------------
@@ -476,38 +491,79 @@ document.getElementById("calendarClose").onclick = () => {
 };
 
 /* ------------------------------
-   EXPORT HTML
+   EXPORT HTML (시간 같으면 빈칸 처리)
 ------------------------------ */
 
 document.getElementById("exportHtmlBtn").onclick = () => {
-    const table = document.getElementById("scheduleTable").outerHTML;
+    const originalTable = document.getElementById("scheduleTable");
+    const clone = originalTable.cloneNode(true);
+
+    const originalRows = originalTable.querySelectorAll("tbody tr");
+    const clonedRows = clone.querySelectorAll("tbody tr");
+
+    clonedRows.forEach((row, rowIndex) => {
+        const originalRow = originalRows[rowIndex];
+        const originalTimeCells = originalRow.querySelectorAll(".time-cell");
+        const clonedTimeCells = row.querySelectorAll(".time-cell");
+
+        clonedTimeCells.forEach((cell, cellIndex) => {
+            const selects = originalTimeCells[cellIndex].querySelectorAll("select");
+            const start = selects[0].value;
+            const end = selects[1].value;
+
+            // HTML 출력 시에만: 시작시간과 종료시간이 같으면 빈칸으로 만듦
+            if (start === end) {
+                cell.innerHTML = ""; 
+            } else {
+                // 시간이 다르면 선택된 시간들을 텍스트로 표시
+                cell.innerHTML = `
+                    <div style="margin-bottom:4px;">${start}</div>
+                    <div>${end}</div>
+                `;
+            }
+        });
+
+        // 직원 이름 셀 처리 (Select 박스 제거 후 텍스트만 삽입)
+        const staffSelect = originalRow.querySelector(".staff-select");
+        const clonedStaffCell = row.querySelector(".staff-col");
+        if (staffSelect && clonedStaffCell) {
+            clonedStaffCell.textContent = staffSelect.value;
+        }
+
+        // 총 근무시간 처리
+        const originalTotal = originalRow.querySelector(".total-cell").textContent;
+        row.querySelector(".total-cell").textContent = originalTotal;
+    });
+
+    // 메시지 버튼 열 삭제 (내보낼 때는 불필요)
+    clone.querySelectorAll("th:last-child, td:last-child").forEach(el => el.remove());
 
     const htmlContent = `
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Exported Schedule</title>
+            <title>Weekly Schedule</title>
             <style>
-                table { border-collapse: collapse; width: 100%; }
-                th, td { border: 1px solid #ccc; padding: 8px; }
-                th { background: #f3f3f3; }
+                table { border-collapse: collapse; width: 100%; font-family: -apple-system, sans-serif; }
+                th, td { border: 1px solid #e2e8f0; padding: 10px 5px; text-align: center; font-size: 13px; }
+                th { background-color: #f8fafc; color: #334155; }
+                .staff-col { background-color: #f1f5f9; font-weight: bold; }
+                .total-cell { font-weight: bold; background-color: #fcfcfc; }
             </style>
         </head>
         <body>
-            <h2>Weekly Schedule</h2>
-            ${table}
+            <h2 style="text-align:center;">${document.getElementById("dateBox").textContent}</h2>
+            ${clone.outerHTML}
         </body>
         </html>
     `;
 
     const blob = new Blob([htmlContent], { type: "text/html" });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement("a");
     a.href = url;
-    a.download = "schedule.html";
+    a.download = `Schedule_${new Date().toISOString().slice(0,10)}.html`;
     a.click();
-
     URL.revokeObjectURL(url);
 };
 
