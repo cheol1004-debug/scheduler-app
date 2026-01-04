@@ -320,7 +320,7 @@ function generateStaffMessage(row) {
         }
     });
 
-    msg += `\n⏱ Total Hours: ${(totalMinutes / 60).toFixed(1)}`;
+    // msg += `\n⏱ Total Hours: ${(totalMinutes / 60).toFixed(1)}`;
 
     return msg;
 }
@@ -491,12 +491,17 @@ document.getElementById("calendarClose").onclick = () => {
 };
 
 /* ------------------------------
-   EXPORT HTML (시간 같으면 빈칸 처리)
+   EXPORT HTML (Total 열 완전 삭제 버전)
 ------------------------------ */
 
 document.getElementById("exportHtmlBtn").onclick = () => {
     const originalTable = document.getElementById("scheduleTable");
     const clone = originalTable.cloneNode(true);
+
+    // 1. 헤더(th)에서 'Total' 열 삭제
+    // 보통 Total은 마지막에서 두 번째(Total)와 마지막(Message) 사이에 있으므로 정확히 선택하여 삭제합니다.
+    const totalHeader = clone.querySelector("th.total-cell") || clone.querySelectorAll("th")[8]; 
+    if (totalHeader) totalHeader.remove();
 
     const originalRows = originalTable.querySelectorAll("tbody tr");
     const clonedRows = clone.querySelectorAll("tbody tr");
@@ -506,16 +511,15 @@ document.getElementById("exportHtmlBtn").onclick = () => {
         const originalTimeCells = originalRow.querySelectorAll(".time-cell");
         const clonedTimeCells = row.querySelectorAll(".time-cell");
 
+        // 2. 시간 셀 처리 (시작=종료 시 빈칸)
         clonedTimeCells.forEach((cell, cellIndex) => {
             const selects = originalTimeCells[cellIndex].querySelectorAll("select");
             const start = selects[0].value;
             const end = selects[1].value;
 
-            // HTML 출력 시에만: 시작시간과 종료시간이 같으면 빈칸으로 만듦
             if (start === end) {
                 cell.innerHTML = ""; 
             } else {
-                // 시간이 다르면 선택된 시간들을 텍스트로 표시
                 cell.innerHTML = `
                     <div style="margin-bottom:4px;">${start}</div>
                     <div>${end}</div>
@@ -523,19 +527,21 @@ document.getElementById("exportHtmlBtn").onclick = () => {
             }
         });
 
-        // 직원 이름 셀 처리 (Select 박스 제거 후 텍스트만 삽입)
+        // 3. 직원 이름 텍스트 변환
         const staffSelect = originalRow.querySelector(".staff-select");
         const clonedStaffCell = row.querySelector(".staff-col");
         if (staffSelect && clonedStaffCell) {
             clonedStaffCell.textContent = staffSelect.value;
         }
 
-        // 총 근무시간 처리
-        const originalTotal = originalRow.querySelector(".total-cell").textContent;
-        row.querySelector(".total-cell").textContent = originalTotal;
+        // 4. 데이터(td)에서 'Total' 열 삭제
+        const totalDataCell = row.querySelector(".total-cell");
+        if (totalDataCell) {
+            totalDataCell.remove(); 
+        }
     });
 
-    // 메시지 버튼 열 삭제 (내보낼 때는 불필요)
+    // 5. 메시지 버튼 열 삭제 (기존 유지)
     clone.querySelectorAll("th:last-child, td:last-child").forEach(el => el.remove());
 
     const htmlContent = `
@@ -548,7 +554,6 @@ document.getElementById("exportHtmlBtn").onclick = () => {
                 th, td { border: 1px solid #e2e8f0; padding: 10px 5px; text-align: center; font-size: 13px; }
                 th { background-color: #f8fafc; color: #334155; }
                 .staff-col { background-color: #f1f5f9; font-weight: bold; }
-                .total-cell { font-weight: bold; background-color: #fcfcfc; }
             </style>
         </head>
         <body>
