@@ -459,9 +459,12 @@ document.getElementById("calendarInput").addEventListener("change", () => {
 ------------------------------ */
 
 function formatWeekRange(dateStr) {
-    const date = new Date(dateStr);
+    // 하이픈(-)을 슬래시(/)로 바꾸면 iOS에서 현지 시간으로 정확히 인식합니다.
+    const safeDateStr = dateStr.replace(/-/g, "/");
+    const date = new Date(safeDateStr);
 
     const day = date.getDay();
+    // 월요일 시작 기준 계산 (일요일이면 0이므로 월요일로 맞춤)
     const diffToMonday = (day === 0 ? -6 : 1 - day);
 
     const monday = new Date(date);
@@ -479,7 +482,6 @@ function formatWeekRange(dateStr) {
 
     return `Week of ${format(monday)} - ${format(sunday)}`;
 }
-
 /* ------------------------------
    CALENDAR CLOSE BUTTON
 ------------------------------ */
@@ -619,12 +621,22 @@ window.onload = () => {
 ------------------------------ */
 
 function updateHeaderDates(startDateStr) {
-    const startDate = new Date(startDateStr);
+    // 하이픈을 슬래시로 변경
+    const safeDateStr = startDateStr.replace(/-/g, "/");
+    const startDate = new Date(safeDateStr);
+    
+    const day = startDate.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1 - day);
+    
+    // 기준이 되는 월요일 구하기
+    const monday = new Date(startDate);
+    monday.setDate(startDate.getDate() + diffToMonday);
+
     const headers = document.querySelectorAll(".schedule-table th.day-col");
 
     headers.forEach((th, i) => {
-        const d = new Date(startDate);
-        d.setDate(startDate.getDate() + i);
+        const d = new Date(monday); // 항상 해당 주의 월요일부터 시작
+        d.setDate(monday.getDate() + i);
 
         const mm = d.getMonth() + 1;
         const dd = d.getDate();
